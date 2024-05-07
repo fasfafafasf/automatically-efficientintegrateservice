@@ -1,33 +1,15 @@
-function totalNQueens(n) {
-  let count = 0;
-  const board = Array.from({ length: n }, () =>
-    Array.from({ length: n }, () => "."),
-  );
-  backtrack(0);
-  return count;
-  function backtrack(row) {
-    if (row === n) {
-      count++;
-      return;
-    }
-    for (let col = 0; col < n; col++) {
-      if (isValid(row, col)) {
-        board[row][col] = "Q";
-        backtrack(row + 1);
-        board[row][col] = ".";
-      }
+function uniquePaths(m, n) {
+  const dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
+  for (let i = 0; i < m; i++) {
+    dp[i][0] = 1;
+  }
+  for (let j = 0; j < n; j++) {
+    dp[0][j] = 1;
+  }
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
     }
   }
-  function isValid(row, col) {
-    for (let i = 0; i < row; i++) {
-      if (board[i][col] === "Q") return false;
-    }
-    for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-      if (board[i][j] === "Q") return false;
-    }
-    for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
-      if (board[i][j] === "Q") return false;
-    }
-    return true;
-  }
+  return dp[m - 1][n - 1];
 }
