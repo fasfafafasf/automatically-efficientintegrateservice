@@ -1,15 +1,14 @@
-function merge(intervals) {
-  intervals.sort((a, b) => a[0] - b[0]);
-  const merged = [];
-  for (const interval of intervals) {
-    if (!merged.length || merged[merged.length - 1][1] < interval[0]) {
-      merged.push(interval);
-    } else {
-      merged[merged.length - 1][1] = Math.max(
-        merged[merged.length - 1][1],
-        interval[1],
-      );
-    }
+function findRedundantConnection(edges) {
+  const parent = new Array(edges.length + 1).fill(-1);
+  for (const edge of edges) {
+    const u = find(parent, edge[0]);
+    const v = find(parent, edge[1]);
+    if (u === v) return edge;
+    parent[u] = v;
   }
-  return merged;
+  return [];
+}
+function find(parent, i) {
+  if (parent[i] === -1) return i;
+  return find(parent, parent[i]);
 }
